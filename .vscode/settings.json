@@ -1,0 +1,28 @@
+{
+    "dotnet.defaultSolution": "NewDatingApp.sln",
+    "cSpell.words": [
+        "ASPNETCORE",
+        "Autoincrement"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "datingApp",
+            "database": "${workspaceFolder:NewDatingApp}/API/datingApp.db"
+        }
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "API/datingApp.db-wal": true,
+        "API/datingApp.db-shm": true,
+        "API/obj": true,
+        "API/bin": true
+    },
+    "explorerExclude.backup": {}
+}
