@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
         var result = await _usersService.GetAllAsync();
         if (result.Success)

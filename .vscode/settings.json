@@ -2,7 +2,9 @@
     "dotnet.defaultSolution": "NewDatingApp.sln",
     "cSpell.words": [
         "ASPNETCORE",
-        "Autoincrement"
+        "Autoincrement",
+        "datepicker",
+        "devkit"
     ],
     "sqltools.connections": [
         {
@@ -22,7 +24,8 @@
         "API/datingApp.db-wal": true,
         "API/datingApp.db-shm": true,
         "API/obj": true,
-        "API/bin": true
+        "API/bin": true,
+        "client/node_modules": true
     },
     "explorerExclude.backup": {},
     "editor.autoClosingBrackets": "always",
@@ -31,6 +34,6 @@
     "editor.formatOnType": false, // required
     "editor.formatOnSave": true, // optional 
     "editor.formatOnSaveMode": "file", // required to format on save
-    "files.autoSave": "onFocusChange", // optional but recommended
-    "vs-code-prettier-eslint.prettierLast": "false" // set as "true" to run 'prettier' last not first
+    // "files.autoSave": "onFocusChange", // optional but recommended
+    "vs-code-prettier-eslint.prettierLast": false // set as "true" to run 'prettier' last not first
 }

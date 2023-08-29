@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\CSharp Projects\\NewDatingApp\\API\\API.csproj": {}
+    "D:\\CSharp Projects\\NewDatingApp\\API\\API.csproj": {}
   },
   "projects": {
-    "d:\\CSharp Projects\\NewDatingApp\\API\\API.csproj": {
+    "D:\\CSharp Projects\\NewDatingApp\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\CSharp Projects\\NewDatingApp\\API\\API.csproj",
+        "projectUniqueName": "D:\\CSharp Projects\\NewDatingApp\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "d:\\CSharp Projects\\NewDatingApp\\API\\API.csproj",
+        "projectPath": "D:\\CSharp Projects\\NewDatingApp\\API\\API.csproj",
         "packagesPath": "C:\\Users\\James\\.nuget\\packages\\",
-        "outputPath": "d:\\CSharp Projects\\NewDatingApp\\API\\obj\\",
+        "outputPath": "D:\\CSharp Projects\\NewDatingApp\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Users\\James\\AppData\\Roaming\\Godot\\mono\\GodotNuGetFallbackFolder",
