@@ -5,7 +5,8 @@ namespace API.Repositories.Interfaces
     public interface IUsersRepository
     {
         Task<User> GetByIdAsync(Guid id);
-        Task<IEnumerable<User>> GetAllAsync();
-        Task Insert(User model);
+        IAsyncEnumerable<User> GetAllAsync();
+        Task Create(User model);
+        Task<User> GetByEmailAddressAsync(string emailAddress);
     }
 }

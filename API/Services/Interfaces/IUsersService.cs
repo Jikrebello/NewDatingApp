@@ -1,12 +1,12 @@
-using API.Models;
-using API.ViewModels;
+using API.DTOs;
 
 namespace API.Services.Interfaces
 {
     public interface IUsersService
     {
-        Task<ResultResponse<UserViewModel>> GetByIdAsync(Guid id);
-        Task<ResultResponse<IEnumerable<UserViewModel>>> GetAllAsync();
-        Task<BaseResponse> Insert(UserViewModel model);
+        Task<ResultResponse<UserDTO>> GetByIdAsync(Guid id);
+        Task<ResultResponse<IEnumerable<UserDTO>>> GetAllAsync();
+        Task<BaseResponse> Create(RegisterUserDTO model);
+        Task<ResultResponse<UserDTO>> Login(LoginDTO model);
     }
 }

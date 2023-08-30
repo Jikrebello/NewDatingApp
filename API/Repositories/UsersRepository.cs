@@ -18,12 +18,19 @@ namespace API.Repositories
             return await _dataContext.Users.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<User> GetByEmailAddressAsync(string emailAddress)
         {
-            return await _dataContext.Users.ToListAsync();
+            return await _dataContext.Users.SingleOrDefaultAsync(
+                x => x.EmailAddress == emailAddress
+            );
         }
 
-        public async Task Insert(User model)
+        public IAsyncEnumerable<User> GetAllAsync()
+        {
+            return _dataContext.Users.AsAsyncEnumerable();
+        }
+
+        public async Task Create(User model)
         {
             await _dataContext.Users.AddAsync(model);
             await _dataContext.SaveChangesAsync();

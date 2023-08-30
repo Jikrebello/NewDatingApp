@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using API.ViewModels;
+using API.DTOs;
 using API.Services.Interfaces;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/users/[action]")]
-public class UsersController : ControllerBase
+public class UsersController : BaseApiController
 {
     private readonly IUsersService _usersService;
 
@@ -15,7 +13,7 @@ public class UsersController : ControllerBase
         _usersService = usersService;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet(template: "{id}")]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var result = await _usersService.GetByIdAsync(id);
@@ -38,13 +36,24 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> InsertUser([FromBody] UserViewModel model)
+    public async Task<IActionResult> CreateUser(RegisterUserDTO dto)
     {
-        var result = await _usersService.Insert(model);
+        var result = await _usersService.Create(dto);
         if (result.Success)
         {
             return Created("", new { result.Message, result.Success });
         }
         return BadRequest(new { result.Message });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<UserDTO>> Login(LoginDTO dto)
+    {
+        var result = await _usersService.Login(dto);
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        return Unauthorized(new { result.Message });
     }
 }

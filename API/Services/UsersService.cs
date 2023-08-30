@@ -1,8 +1,10 @@
+using System.Security.Cryptography;
+using System.Text;
 using API.Entities;
-using API.Models;
+using API.DTOs;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
-using API.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services
 {
@@ -15,22 +17,22 @@ namespace API.Services
             _userRepository = userRepository;
         }
 
-        public async Task<ResultResponse<UserViewModel>> GetByIdAsync(Guid id)
+        public async Task<ResultResponse<UserDTO>> GetByIdAsync(Guid id)
         {
             try
             {
                 var user = await _userRepository.GetByIdAsync(id);
                 if (user == null)
                 {
-                    return new ResultResponse<UserViewModel>(
+                    return new ResultResponse<UserDTO>(
                         success: false,
                         message: "User not found.",
                         result: null
                     );
                 }
-                var userModel = new UserViewModel { Id = user.Id, Name = user.Name, };
+                var userModel = new UserDTO { Id = user.Id, Name = user.Name, };
 
-                return new ResultResponse<UserViewModel>(
+                return new ResultResponse<UserDTO>(
                     success: true,
                     message: "User found.",
                     userModel
@@ -38,7 +40,7 @@ namespace API.Services
             }
             catch (Exception ex)
             {
-                return new ResultResponse<UserViewModel>(
+                return new ResultResponse<UserDTO>(
                     success: false,
                     message: $"An error occurred: {ex.Message}",
                     result: null
@@ -46,14 +48,15 @@ namespace API.Services
             }
         }
 
-        public async Task<ResultResponse<IEnumerable<UserViewModel>>> GetAllAsync()
+        public async Task<ResultResponse<IEnumerable<UserDTO>>> GetAllAsync()
         {
             try
             {
-                var users = await _userRepository.GetAllAsync();
-                if (users == null || !users.Any())
+                var users = await _userRepository.GetAllAsync().ToListAsync();
+
+                if (!users.Any())
                 {
-                    return new ResultResponse<IEnumerable<UserViewModel>>(
+                    return new ResultResponse<IEnumerable<UserDTO>>(
                         success: false,
                         message: "No users found.",
                         result: null
@@ -61,10 +64,10 @@ namespace API.Services
                 }
 
                 var userModels = users
-                    .Select(user => new UserViewModel { Id = user.Id, Name = user.Name })
+                    .Select(user => new UserDTO { Id = user.Id, Name = user.Name })
                     .ToList();
 
-                return new ResultResponse<IEnumerable<UserViewModel>>(
+                return new ResultResponse<IEnumerable<UserDTO>>(
                     success: true,
                     message: "Users found.",
                     userModels
@@ -72,7 +75,7 @@ namespace API.Services
             }
             catch (Exception ex)
             {
-                return new ResultResponse<IEnumerable<UserViewModel>>(
+                return new ResultResponse<IEnumerable<UserDTO>>(
                     success: false,
                     message: $"An error occurred: {ex.Message}",
                     result: null
@@ -80,22 +83,33 @@ namespace API.Services
             }
         }
 
-        public async Task<BaseResponse> Insert(UserViewModel model)
+        public async Task<BaseResponse> Create(RegisterUserDTO dto)
         {
             try
             {
-                if (model == null)
+                if (await UserExists(dto.EmailAddress))
                 {
-                    return new BaseResponse(success: false, message: "Model is null.");
+                    return new BaseResponse(
+                        success: false,
+                        message: "Email Address is already taken"
+                    );
                 }
 
-                var user = new User { Name = model.Name };
+                using var hmac = new HMACSHA512();
 
-                await _userRepository.Insert(user);
+                var user = new User
+                {
+                    Name = dto.Name,
+                    EmailAddress = dto.EmailAddress.ToLower(),
+                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password)),
+                    PasswordSalt = hmac.Key
+                };
+
+                await _userRepository.Create(user);
 
                 return new BaseResponse(
                     success: true,
-                    message: $"Successfully Inserted User with Id: {user.Id}."
+                    message: $"Successfully Inserted User: {user.Name} with Email Address: {user.EmailAddress}."
                 );
             }
             catch (Exception ex)
@@ -105,6 +119,48 @@ namespace API.Services
                     message: $"An error occurred: {ex.Message}"
                 );
             }
+        }
+
+        public async Task<ResultResponse<UserDTO>> Login(LoginDTO dto)
+        {
+            var user = await _userRepository.GetByEmailAddressAsync(dto.EmailAddress);
+
+            if (user == null)
+            {
+                return new ResultResponse<UserDTO>(
+                    success: false,
+                    message: "Invalid Email Address.",
+                    result: null
+                );
+            }
+
+            using var hmac = new HMACSHA512(user.PasswordSalt);
+            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.Password));
+
+            for (int i = 0; i < computedHash.Length; i++)
+            {
+                if (computedHash[i] != user.PasswordHash[i])
+                {
+                    return new ResultResponse<UserDTO>(
+                        success: false,
+                        message: "Invalid Password.",
+                        result: null
+                    );
+                }
+            }
+
+            return new ResultResponse<UserDTO>(
+                true,
+                "User Logged In.",
+                new UserDTO { Id = user.Id, Name = user.Name }
+            );
+        }
+
+        private async Task<bool> UserExists(string emailAddress)
+        {
+            return await _userRepository
+                .GetAllAsync()
+                .AnyAsync(x => x.EmailAddress == emailAddress.ToLower());
         }
     }
 }

@@ -67,3 +67,5 @@ D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\runtimes\win-arm\native\e_s
 D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\runtimes\win-arm64\native\e_sqlite3.dll
 D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\runtimes\win-x86\native\e_sqlite3.dll
+D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\CSharp Projects\NewDatingApp\API\bin\Debug\net7.0\System.Linq.Async.dll

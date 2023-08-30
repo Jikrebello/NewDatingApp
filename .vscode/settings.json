@@ -4,7 +4,9 @@
         "ASPNETCORE",
         "Autoincrement",
         "datepicker",
-        "devkit"
+        "devkit",
+        "hmac",
+        "HMACSHA"
     ],
     "sqltools.connections": [
         {
