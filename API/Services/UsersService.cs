@@ -6,6 +6,7 @@ using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace API.Services
 {
@@ -66,9 +67,7 @@ namespace API.Services
                     );
                 }
 
-                var userModels = users
-                    .Select(user => new UserDTO { Id = user.Id, Name = user.Name })
-                    .ToList();
+                var userModels = _mapper.Map<IEnumerable<UserDTO>>(users);
 
                 return new ResultResponse<IEnumerable<UserDTO>>(
                     success: true,
