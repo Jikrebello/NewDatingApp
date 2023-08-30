@@ -5,16 +5,19 @@ using API.DTOs;
 using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace API.Services
 {
     public class UsersService : IUsersService
     {
         private readonly IUsersRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersService(IUsersRepository userRepository)
+        public UsersService(IUsersRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<ResultResponse<UserDTO>> GetByIdAsync(Guid id)
@@ -150,9 +153,9 @@ namespace API.Services
             }
 
             return new ResultResponse<UserDTO>(
-                true,
-                "User Logged In.",
-                new UserDTO { Id = user.Id, Name = user.Name }
+                success: true,
+                message: "User Logged In.",
+                result: _mapper.Map<UserDTO>(user)
             );
         }
 

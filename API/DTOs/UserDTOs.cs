@@ -6,6 +6,7 @@ namespace API.DTOs
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string EmailAddress { get; set; }
     }
 
     public class RegisterUserDTO

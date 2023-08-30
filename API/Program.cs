@@ -17,6 +17,8 @@ builder.Services.AddScoped<IUsersService, UsersService>();
 // Add Repositories.
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

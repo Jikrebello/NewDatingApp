@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "6ZEl2IU1VtWpEQVFSS1twO9DNPxgSQn8//5tp2pwSCkGkgKe6AzYu4XwJsZHbBlOUwx7yEqP8NsFpo5OrCv4mw==",
+  "dgSpecHash": "3YTtAb2VVyDDDsgOTLkHVXDJVFOBe0vKBRvHHgdPYjoejO8RRq8zwA8dxsFjpYGWrXI7+qptIyC9A0uts6K72A==",
   "success": true,
   "projectFilePath": "d:\\CSharp Projects\\NewDatingApp\\API\\API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\James\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\James\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.10\\microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
+    "C:\\Users\\James\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.10\\microsoft.data.sqlite.core.7.0.10.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.10\\microsoft.entityframeworkcore.7.0.10.nupkg.sha512",
     "C:\\Users\\James\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.10\\microsoft.entityframeworkcore.abstractions.7.0.10.nupkg.sha512",
