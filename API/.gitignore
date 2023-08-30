@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Ignore obj folder
+**/obj/
+
+# Ignore bin folder
+**/bin/
