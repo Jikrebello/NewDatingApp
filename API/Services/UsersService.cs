@@ -6,19 +6,24 @@ using API.Repositories.Interfaces;
 using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 
 namespace API.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly IUsersRepository _userRepository;
+        private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IUsersRepository _userRepository;
 
-        public UsersService(IUsersRepository userRepository, IMapper mapper)
+        public UsersService(
+            ITokenService tokenService,
+            IMapper mapper,
+            IUsersRepository userRepository
+        )
         {
-            _userRepository = userRepository;
+            _tokenService = tokenService;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public async Task<ResultResponse<UserDTO>> GetByIdAsync(Guid id)
@@ -34,12 +39,47 @@ namespace API.Services
                         result: null
                     );
                 }
-                var userModel = new UserDTO { Id = user.Id, Name = user.Name, };
+
+                var userModel = _mapper.Map<UserDTO>(user);
+                userModel.Token = _tokenService.CreateToken(user);
 
                 return new ResultResponse<UserDTO>(
                     success: true,
                     message: "User found.",
-                    userModel
+                    result: userModel
+                );
+            }
+            catch (Exception ex)
+            {
+                return new ResultResponse<UserDTO>(
+                    success: false,
+                    message: $"An error occurred: {ex.Message}",
+                    result: null
+                );
+            }
+        }
+
+        public async Task<ResultResponse<UserDTO>> GetByEmailAddressAsync(string emailAddress)
+        {
+            try
+            {
+                var user = await _userRepository.GetByEmailAddressAsync(emailAddress);
+                if (user == null)
+                {
+                    return new ResultResponse<UserDTO>(
+                        success: false,
+                        message: "User not found.",
+                        result: null
+                    );
+                }
+
+                var userModel = _mapper.Map<UserDTO>(user);
+                userModel.Token = _tokenService.CreateToken(user);
+
+                return new ResultResponse<UserDTO>(
+                    success: true,
+                    message: "User found.",
+                    result: userModel
                 );
             }
             catch (Exception ex)
@@ -72,7 +112,7 @@ namespace API.Services
                 return new ResultResponse<IEnumerable<UserDTO>>(
                     success: true,
                     message: "Users found.",
-                    userModels
+                    result: userModels
                 );
             }
             catch (Exception ex)
@@ -85,13 +125,13 @@ namespace API.Services
             }
         }
 
-        public async Task<BaseResponse> Create(RegisterUserDTO dto)
+        public async Task<ResultResponse<UserDTO>> Register(RegisterUserDTO dto)
         {
             try
             {
                 if (await UserExists(dto.EmailAddress))
                 {
-                    return new BaseResponse(
+                    return new ResultResponse<UserDTO>(
                         success: false,
                         message: "Email Address is already taken"
                     );
@@ -107,18 +147,23 @@ namespace API.Services
                     PasswordSalt = hmac.Key
                 };
 
-                await _userRepository.Create(user);
+                await _userRepository.Register(user);
 
-                return new BaseResponse(
+                var userDTO = _mapper.Map<UserDTO>(user);
+                userDTO.Token = _tokenService.CreateToken(user);
+
+                return new ResultResponse<UserDTO>(
                     success: true,
-                    message: $"Successfully Inserted User: {user.Name} with Email Address: {user.EmailAddress}."
+                    message: $"Successfully Registered User: {user.Name} with Email Address: {user.EmailAddress}.",
+                    result: userDTO
                 );
             }
             catch (Exception ex)
             {
-                return new BaseResponse(
+                return new ResultResponse<UserDTO>(
                     success: false,
-                    message: $"An error occurred: {ex.Message}"
+                    message: $"An error occurred: {ex.Message}",
+                    result: null
                 );
             }
         }
@@ -151,10 +196,13 @@ namespace API.Services
                 }
             }
 
+            var userDTO = _mapper.Map<UserDTO>(user);
+            userDTO.Token = _tokenService.CreateToken(user);
+
             return new ResultResponse<UserDTO>(
                 success: true,
                 message: "User Logged In.",
-                result: _mapper.Map<UserDTO>(user)
+                result: userDTO
             );
         }
 

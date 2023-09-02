@@ -6,7 +6,7 @@ namespace API.Repositories.Interfaces
     {
         Task<User> GetByIdAsync(Guid id);
         IAsyncEnumerable<User> GetAllAsync();
-        Task Create(User model);
+        Task Register(User model);
         Task<User> GetByEmailAddressAsync(string emailAddress);
     }
 }

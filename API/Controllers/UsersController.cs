@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using API.DTOs;
 using API.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
+[Authorize]
 public class UsersController : BaseApiController
 {
     private readonly IUsersService _usersService;
@@ -14,7 +16,7 @@ public class UsersController : BaseApiController
     }
 
     [HttpGet(template: "{id}")]
-    public async Task<IActionResult> GetUserById(Guid id)
+    public async Task<ActionResult<UserDTO>> GetUserById(Guid id)
     {
         var result = await _usersService.GetByIdAsync(id);
         if (result.Success)
@@ -24,7 +26,19 @@ public class UsersController : BaseApiController
         return NotFound(new { result.Message });
     }
 
+    [HttpGet(template: "{emailAddress}")]
+    public async Task<ActionResult<UserDTO>> GetUserByEmailAddress(string emailAddress)
+    {
+        var result = await _usersService.GetByEmailAddressAsync(emailAddress);
+        if (result.Success)
+        {
+            return Ok(result);
+        }
+        return NotFound(new { result.Message });
+    }
+
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllUsers()
     {
         var result = await _usersService.GetAllAsync();
@@ -36,9 +50,9 @@ public class UsersController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(RegisterUserDTO dto)
+    public async Task<ActionResult<UserDTO>> RegisterUser(RegisterUserDTO dto)
     {
-        var result = await _usersService.Create(dto);
+        var result = await _usersService.Register(dto);
         if (result.Success)
         {
             return Created("", new { result.Message, result.Success });

@@ -30,7 +30,7 @@ namespace API.Repositories
             return _dataContext.Users.AsAsyncEnumerable();
         }
 
-        public async Task Create(User model)
+        public async Task Register(User model)
         {
             await _dataContext.Users.AddAsync(model);
             await _dataContext.SaveChangesAsync();
