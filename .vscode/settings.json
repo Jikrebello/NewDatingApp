@@ -6,15 +6,8 @@
     "datepicker",
     "devkit",
     "hmac",
-    "HMACSHA"
-  ],
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "driver": "SQLite",
-      "name": "datingApp",
-      "database": "${workspaceFolder:NewDatingApp}/API/datingApp.db"
-    }
+    "HMACSHA",
+    "uuidv"
   ],
   "files.exclude": {
     "**/.git": true,
@@ -27,7 +20,8 @@
     "API/datingApp.db-shm": true,
     "API/obj": true,
     "API/bin": true,
-    "client/node_modules": true
+    "client/node_modules": true,
+    "client/.angular": true
   },
   "explorerExclude.backup": {},
   "editor.autoClosingBrackets": "always",

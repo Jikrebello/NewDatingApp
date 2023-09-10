@@ -50,17 +50,19 @@ public class UsersController : BaseApiController
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<UserDTO>> RegisterUser(RegisterUserDTO dto)
     {
         var result = await _usersService.Register(dto);
         if (result.Success)
         {
-            return Created("", new { result.Message, result.Success });
+            return Created("", result);
         }
         return BadRequest(new { result.Message });
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<UserDTO>> Login(LoginDTO dto)
     {
         var result = await _usersService.Login(dto);
