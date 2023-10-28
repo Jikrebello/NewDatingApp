@@ -27,7 +27,7 @@ namespace API.Repositories
 
         public IAsyncEnumerable<User> GetAllAsync()
         {
-            return _dataContext.Users.AsAsyncEnumerable();
+            return _dataContext.Users.AsNoTracking().AsAsyncEnumerable();
         }
 
         public async Task Register(User model)

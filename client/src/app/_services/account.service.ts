@@ -2,9 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map } from "rxjs";
 import { environment } from "src/environments/environment";
+import { UsersEndpoints } from "../_endpoints/api-endpoints";
 import { ResultResponse } from "../_models/responses";
-import { ILoginUser, IRegisterUser, User } from "../_models/user";
-import { UsersPaths } from "./api-endpoints";
+import { LoginUser, RegisterUser, User } from "../_models/user";
 
 @Injectable({
   providedIn: "root",
@@ -15,11 +15,14 @@ export class AccountService {
   >(null);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private https: HttpClient) {}
 
-  login(model: ILoginUser) {
-    return this.http
-      .post<ResultResponse<User>>(environment.baseUrl + UsersPaths.LOGIN, model)
+  login(model: LoginUser) {
+    return this.https
+      .post<ResultResponse<User>>(
+        environment.baseUrl + UsersEndpoints.LOGIN,
+        model
+      )
       .pipe(
         map((response: ResultResponse<User>) => {
           if (response && response.result) {
@@ -33,10 +36,10 @@ export class AccountService {
       );
   }
 
-  register(model: IRegisterUser) {
-    return this.http
+  register(model: RegisterUser) {
+    return this.https
       .post<ResultResponse<User>>(
-        environment.baseUrl + UsersPaths.REGISTER,
+        environment.baseUrl + UsersEndpoints.REGISTER,
         model
       )
       .pipe(
